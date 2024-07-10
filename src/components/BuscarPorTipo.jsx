@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { getPokemonTipos, getTipo } from "../slices/pokemonSlice";
+import { getPokemonTipos, getTipo, getPokemon } from "../slices/pokemonSlice";
 
 const BuscarPorTipo = () => {
   const [tipoElegido, setTipoElegido] = useState("");
@@ -10,6 +10,10 @@ const BuscarPorTipo = () => {
   const status = useSelector((state) => state.pokemones.status);
   const error = useSelector((state) => state.pokemones.error);
   const tipo = useSelector((state) => state.pokemones.tipo);
+  const detalles = useSelector((state) => state.pokemones.detalles);
+  const pokemon = useSelector((state) => state.pokemones.pokemon);
+
+
 
   const dispatch = useDispatch();
 
@@ -20,9 +24,15 @@ const BuscarPorTipo = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(tipoElegido);
-    dispatch(getTipo(tipoElegido));
+    dispatch(getTipo(tipoElegido));    
   };
+  
+  console.log(detalles);
 
+  const tipoObjeto = Object.keys(tipo).length === 0;
+  const pokeObjeto = Object.keys(pokemon).length === 0;
+
+ 
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -44,12 +54,17 @@ const BuscarPorTipo = () => {
         </select>
         <button type="submit">Buscar</button>
       </form>
+
+      {(tipoObjeto) ? <div>{" "}</div> :
       <ul>
         {tipo.pokemon &&
-          tipo.pokemones.map((p) => {
-            return <li>{p.name}</li>;
+          tipo.pokemon.map((p) => {
+            return <>            
+                   <li key={p.pokemon.name}>{p.pokemon.name}</li>                  
+                  </>
           })}
       </ul>
+      }
     </>
   );
 };

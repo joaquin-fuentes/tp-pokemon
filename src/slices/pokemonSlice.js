@@ -7,12 +7,13 @@ const initialState = {
     error: null,
     pokemon: {},
     tipos:[],
-    tipo:{}
+    tipo:{}, 
+    detalles: [], 
 };
 
 export const getPokemones = createAsyncThunk('pokemones/getPokemones', async () => {
     const respuesta = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=100');
-    return respuesta.data;
+    return respuesta.data.results;
 });
 
 export const getPokemon = createAsyncThunk('pokemones/getPokemon', async (name) => {
@@ -27,6 +28,7 @@ export const getPokemonTipos = createAsyncThunk('pokemones/getPokemonTipos', asy
 
 export const getTipo = createAsyncThunk('pokemones/getTipo', async (tipo) => {
     const respuesta = await axios.get(`https://pokeapi.co/api/v2/type/${tipo}`);
+    console.log(respuesta.data.pokemon);
     return respuesta.data;
 });
 
@@ -50,7 +52,10 @@ const pokemonSlice = createSlice({
             })
             .addCase(getPokemon.fulfilled, (state, action) => {
                 state.status = 'Exitoso';
-                state.pokemon = action.payload;
+                state.pokemon = action.payload;             
+            })
+            .addCase(getPokemon.pending, (state) => {
+                state.status = 'Cargando';                           
             })
             .addCase(getPokemonTipos.fulfilled, (state, action) => {
                 state.status = 'Exitoso';
@@ -58,7 +63,10 @@ const pokemonSlice = createSlice({
             })
             .addCase(getTipo.fulfilled, (state, action)=>{
                 state.status = "Exitoso";
-                state.tipo = action.payload
+                state.tipo = action.payload;
+                state.detalles = action.payload.pokemon.map((p)=> {
+                    return p.pokemon.name
+                });
             })
     },
 });

@@ -13,6 +13,7 @@ const ListaPokemones = () => {
     dispatch(getPokemones());
   }, []);
 
+
   let content;
 
   if (status === "Cargando") {
@@ -20,8 +21,8 @@ const ListaPokemones = () => {
   } else if (status === "Exitoso") {
     content = (
       <ul>
-        {pokemones.results &&
-          pokemones.results.map((pokemon) => {
+        {pokemones &&
+          pokemones.map((pokemon) => {
             return <li key={pokemon.name}>{pokemon.name}</li>;
           })}
       </ul>
