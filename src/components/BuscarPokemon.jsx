@@ -12,10 +12,8 @@ const BuscarPokemon = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(pokemonBuscado);
     dispatch(getPokemon(pokemonBuscado));
   };
-  console.log(pokemon)
   return (
     <>
       <form className="d-flex" onSubmit={onSubmit}>
