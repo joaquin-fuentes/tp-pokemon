@@ -9,6 +9,7 @@ const initialState = {
     tipos:[],
     tipo:{}, 
     detalles: [], 
+    pokemonsTipo: {},
 };
 
 export const getPokemones = createAsyncThunk('pokemones/getPokemones', async () => {
@@ -28,15 +29,22 @@ export const getPokemonTipos = createAsyncThunk('pokemones/getPokemonTipos', asy
 
 export const getTipo = createAsyncThunk('pokemones/getTipo', async (tipo) => {
     const respuesta = await axios.get(`https://pokeapi.co/api/v2/type/${tipo}`);
-    console.log(respuesta.data.pokemon);
     return respuesta.data;
 });
 
+export const getPokemonsTipoDetalles = createAsyncThunk('pokemones/getPokemonsTipoDetalles', async (name) => {
+    const respuesta = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    return respuesta.data;
+});
 
 const pokemonSlice = createSlice({
     name: 'pokemones',
     initialState,
-    reducers: {},
+    reducers: {
+        resetPokemon: (state) => {
+            state.pokemonsTipo = {};
+          }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getPokemones.pending, (state) => {
@@ -68,7 +76,11 @@ const pokemonSlice = createSlice({
                     return p.pokemon.name
                 });
             })
+            .addCase(getPokemonsTipoDetalles.fulfilled, (state, action) => {
+                state.status = 'Exitoso';
+                state.pokemonsTipo = action.payload;             
+            })
     },
 });
-
+export const { resetPokemon } = pokemonSlice.actions;
 export default pokemonSlice.reducer;

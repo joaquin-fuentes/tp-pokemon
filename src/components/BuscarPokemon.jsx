@@ -15,7 +15,12 @@ const BuscarPokemon = () => {
   const dispatch = useDispatch();
   const onSubmit = (e) => {
     e.preventDefault();
-    setSubmit(true);
+    if(!pokemonBuscado){
+      alert("Ingrese un pokemon");
+    }else{
+      setSubmit(true);
+    }
+    
   };
 
   useEffect(() => {
@@ -44,10 +49,11 @@ const BuscarPokemon = () => {
             value= {pokemonBuscado}
             onChange={(e) => setPokemonBuscado(e.target.value)}
           />
-        </div>
-        <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary m-2">
           Buscar
-        </button>
+          </button>
+        </div>
+        
       </form>
       {/*<PokemonEncontrado pokemon={pokemon} image={image}></PokemonEncontrado>*/}
       {(pokeObjeto) ? <p>{" "}</p>

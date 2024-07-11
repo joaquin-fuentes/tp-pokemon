@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { getPokemonTipos, getTipo, getPokemon } from "../slices/pokemonSlice";
+import { getPokemonTipos, getTipo } from "../slices/pokemonSlice";
+import PokeTable from "./PokeTable";
 
 const BuscarPorTipo = () => {
   const [tipoElegido, setTipoElegido] = useState("");
@@ -27,10 +28,8 @@ const BuscarPorTipo = () => {
     dispatch(getTipo(tipoElegido));    
   };
   
-  console.log(detalles);
 
   const tipoObjeto = Object.keys(tipo).length === 0;
-  const pokeObjeto = Object.keys(pokemon).length === 0;
 
  
   return (
@@ -56,14 +55,15 @@ const BuscarPorTipo = () => {
       </form>
 
       {(tipoObjeto) ? <div>{" "}</div> :
-      <ul>
+      /*<ul>
         {tipo.pokemon &&
           tipo.pokemon.map((p) => {
             return <>            
                    <li key={p.pokemon.name}>{p.pokemon.name}</li>                  
                   </>
           })}
-      </ul>
+      </ul>*/
+      <PokeTable detalles={detalles}></PokeTable>
       }
     </>
   );
